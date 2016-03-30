@@ -34,7 +34,7 @@ namespace NadekoBot.Modules.Gambling
                     .Parameter("role", ParameterType.Optional)
                     .Do(RaffleFunc());
 
-                cgb.CreateCommand(Prefix + "$$")
+                cgb.CreateCommand(Prefix + "have")
                     .Description(string.Format("Check how much {0}s you have.", NadekoBot.Config.CurrencyName))
                     .Do(NadekoFlowerCheckFunc());
 
@@ -63,7 +63,7 @@ namespace NadekoBot.Modules.Gambling
                             return;
                         }
 
-                        FlowersHandler.RemoveFlowers(e.User, "Gift", (int)amount);
+                        await FlowersHandler.RemoveFlowersAsync(e.User, "Gift", (int)amount);
                         await FlowersHandler.AddFlowersAsync(mentionedUser, "Gift", (int)amount);
 
                         await e.Channel.SendMessage($"{e.User.Mention} successfully sent {amount} {NadekoBot.Config.CurrencyName}s to {mentionedUser.Mention}!");
@@ -109,7 +109,7 @@ namespace NadekoBot.Modules.Gambling
                         if (mentionedUser == null)
                             return;
 
-                        FlowersHandler.RemoveFlowers(mentionedUser, $"Taken by bot owner.({e.User.Name}/{e.User.Id})", (int)amount);
+                        await FlowersHandler.RemoveFlowersAsync(mentionedUser, $"Taken by bot owner.({e.User.Name}/{e.User.Id})", (int)amount);
 
                         await e.Channel.SendMessage($"{e.User.Mention} successfully took {amount} {NadekoBot.Config.CurrencyName}s from {mentionedUser.Mention}!");
                     });
@@ -147,7 +147,7 @@ namespace NadekoBot.Modules.Gambling
                 var members = role.Members.Where(u => u.Status == Discord.UserStatus.Online); // only online
                 var membersArray = members as User[] ?? members.ToArray();
                 var usr = membersArray[new System.Random().Next(0, membersArray.Length)];
-                await e.Channel.SendMessage($"**Raffled user:** {usr.Name} (id: {usr.Id})");
+                await e.Channel.SendMessage($"** Winner! (ﾉ ͡  º ͜ ʖ ͡ º)ﾉ*:･ﾟ✧** {usr.Name} (id: {usr.Id})");
             };
         }
     }
